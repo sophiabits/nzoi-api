@@ -1,0 +1,21 @@
+{
+  "name": "@sophiabits/nzoi-api",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "API client for train.nzoi.org.nz",
+  "main": "index.js",
+  "scripts": {},
+  "author": {
+    "name": "Sophia Willows",
+    "email": "sophia.willows@hey.com",
+    "url": "https://sophiabits.com"
+  },
+  "devDependencies": {
+    "ts-node": "10.4.0",
+    "typescript": "4.5.4"
+  },
+  "dependencies": {
+    "axios": "0.24.0",
+    "cheerio": "1.0.0-rc.10"
+  }
+}
