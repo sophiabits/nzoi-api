@@ -18,8 +18,9 @@
 
     "baseUrl": "./src",
     "noEmitOnError": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "sourceMap": true,
+    "declaration": true
   },
   "ts-node": {
     "emit": false
