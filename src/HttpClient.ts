@@ -29,6 +29,15 @@ export default class HttpClient {
     this.readyPromise = this.__createSession(config.username, config.password);
   }
 
+  makeUrl(path: string) {
+    // This method does not respect baseURL
+    // See: https://github.com/axios/axios/issues/2468
+    return this.axios.getUri({
+      method: 'GET',
+      url: `${this.axios.defaults.baseURL!}${path}`,
+    });
+  }
+
   async ready() {
     await this.readyPromise;
   }

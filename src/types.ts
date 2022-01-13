@@ -9,15 +9,21 @@ export interface NzoiProblem {
   id: string;
   name: string;
   statement: string;
+  url: string;
 
-  limits: {
-    memory: number;
-    time: number;
-  };
-  submissions: {
-    correct: number;
-    incorrect: number;
-  };
+  limits: NzoiProblemLimits;
+  stats: NzoiProblemStatistics;
+}
+
+export interface NzoiProblemLimits {
+  memory: number;
+  time: number;
+}
+
+export interface NzoiProblemStatistics {
+  correct: number;
+  incorrect: number;
+  total: number;
 }
 
 export type ResourceId = string | number;
