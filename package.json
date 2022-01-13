@@ -1,6 +1,6 @@
 {
   "name": "nzoi-api",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "description": "API client for train.nzoi.org.nz",
   "main": "lib/index.js",
