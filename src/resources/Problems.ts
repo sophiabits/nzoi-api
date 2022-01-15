@@ -7,6 +7,8 @@ import * as problemUtils from '../lib/problemUtils';
 import Resource from './Resource';
 
 export default class Problems extends Resource {
+  // TODO list()
+
   async retrieve(id: ResourceId) {
     const response = await this.http.request({
       method: 'GET',

@@ -1,6 +1,7 @@
 import Problems from './resources/Problems';
 import ProblemSets from './resources/ProblemSets';
 import Submissions from './resources/Submissions';
+import Users from './resources/Users';
 
 import HttpClient from './HttpClient';
 
@@ -12,6 +13,7 @@ export class Nzoi {
   problems: Problems;
   problemSets: ProblemSets;
   submissions: Submissions;
+  users: Users;
 
   private http: HttpClient;
 
@@ -24,5 +26,6 @@ export class Nzoi {
     this.problems = new Problems(this.http);
     this.problemSets = new ProblemSets(this.http);
     this.submissions = new Submissions(this.http);
+    this.users = new Users(this.http);
   }
 }

@@ -2,6 +2,8 @@ import { ResourceId } from '../types';
 import Resource from './Resource';
 
 export default class ProblemSets extends Resource {
+  // TODO list()
+
   retrieve(id: ResourceId) {
     this.http.request({
       method: 'GET',
