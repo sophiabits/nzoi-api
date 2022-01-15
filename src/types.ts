@@ -26,6 +26,21 @@ export interface NzoiProblemStatistics {
   total: number;
 }
 
+export interface NzoiUser {
+  id: string;
+  avatar: string;
+  email: string;
+  name: string;
+  username: string;
+  /** Two character ISO country code */
+  country: string;
+
+  /** In ISO format */
+  createdAt: string;
+  /** In ISO format */
+  updatedAt: string;
+}
+
 export type ResourceId = string | number;
 
 export interface RequestOptions {
