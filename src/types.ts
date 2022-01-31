@@ -1,4 +1,39 @@
 declare namespace Nzoi {
+  /**
+   * Not all languages are guaranteed to be here.
+   */
+  enum Language {
+    C11 = 12,
+    C99 = 4,
+    Cpp03 = 1,
+    Cpp11 = 5,
+    Cpp14 = 10,
+    Cpp17 = 11,
+    Csharp = 16,
+    Haskell2010 = 3,
+    J = 9,
+    Java11 = 13,
+    Java6 = 6,
+    Javascript = 15,
+    Python27 = 2,
+    Python34 = 7,
+    Python36PyPy = 17,
+    Python38 = 14,
+    Ruby22 = 8,
+  }
+
+  enum LanguageFamily {
+    C = 'c',
+    Cpp = 'cpp',
+    Csharp = 'csharp',
+    Haskell = 'haskell',
+    J = 'j',
+    Java = 'java',
+    Javascript = 'javascript',
+    Ruby = 'ruby',
+    Python = 'python',
+  }
+
   interface Config {
     host?: string;
     password: string;
