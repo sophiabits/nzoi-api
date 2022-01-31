@@ -1,7 +1,5 @@
 import cheerio from 'cheerio';
 
-import type { NzoiProblem, ResourceId } from '../types';
-
 import * as problemUtils from '../lib/problemUtils';
 
 import Resource from './Resource';
@@ -9,7 +7,7 @@ import Resource from './Resource';
 export default class Problems extends Resource {
   // TODO list()
 
-  async retrieve(id: ResourceId) {
+  async retrieve(id: Nzoi.ResourceId) {
     const response = await this.http.request({
       method: 'GET',
       // The controller method for this endpoint has a comment indicating it can be read as xml,
@@ -19,7 +17,7 @@ export default class Problems extends Resource {
 
     const $ = cheerio.load(response.data);
 
-    const problem: NzoiProblem = {
+    const problem: Nzoi.Problem = {
       id: id.toString(),
       name: $('#main-page-title-box h1').text()!,
       statement: problemUtils.serializeStatement($),

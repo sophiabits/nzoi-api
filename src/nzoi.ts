@@ -6,7 +6,6 @@ import Users from './resources/Users';
 import HttpClient from './HttpClient';
 
 import { DEFAULT_NZOI_HOST } from './config';
-import type { NzoiConfig } from './types';
 
 export class Nzoi {
   // Resources
@@ -17,7 +16,7 @@ export class Nzoi {
 
   private http: HttpClient;
 
-  constructor(config: NzoiConfig) {
+  constructor(config: Nzoi.Config) {
     this.http = new HttpClient({
       host: DEFAULT_NZOI_HOST,
       ...config,

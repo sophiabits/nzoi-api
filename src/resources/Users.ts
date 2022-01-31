@@ -1,11 +1,10 @@
 import { XMLParser } from 'fast-xml-parser';
 
 import retrieveEndpoint from '../factories/retrieveEndpoint';
-import type { NzoiUser } from '../types';
 
 import Resource from './Resource';
 
-function transformUser(xml: string): NzoiUser {
+function transformUser(xml: string): Nzoi.User {
   const doc = new XMLParser().parse(xml);
 
   return {
@@ -24,7 +23,7 @@ function transformUser(xml: string): NzoiUser {
 export default class Users extends Resource {
   // TODO list()
 
-  retrieve = retrieveEndpoint<NzoiUser>({
+  retrieve = retrieveEndpoint<Nzoi.User>({
     path: '/user/:id.xml',
     transform: (response) => transformUser(response.data),
   });

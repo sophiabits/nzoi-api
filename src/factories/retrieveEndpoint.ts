@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
 import type Resource from '../resources/Resource';
-import type { ResourceId } from '../types';
 
 interface RetrieveEndpointOpts<Output> {
   /** The string :id will be replaced with the actual id requested */
@@ -11,10 +10,10 @@ interface RetrieveEndpointOpts<Output> {
 
 export interface RetrieveFn<Output> {
   /** Used for fetching a single resource by id. */
-  (this: Resource, id: ResourceId): Promise<Output>;
+  (this: Resource, id: Nzoi.ResourceId): Promise<Output>;
 
   /** Overloaded version of `retrieve()` which can return multiple resources. */
-  (this: Resource, ids: ResourceId[]): Promise<Output[]>;
+  (this: Resource, ids: Nzoi.ResourceId[]): Promise<Output[]>;
 }
 
 export default function retrieveEndpoint<Output>(
@@ -22,7 +21,10 @@ export default function retrieveEndpoint<Output>(
 ): RetrieveFn<Output> {
   const { path: pathTemplate, transform } = opts;
 
-  async function retrieve(this: Resource, idOrIds: ResourceId | ResourceId[]): Promise<any> {
+  async function retrieve(
+    this: Resource,
+    idOrIds: Nzoi.ResourceId | Nzoi.ResourceId[],
+  ): Promise<any> {
     const isMultiRetrieve = Array.isArray(idOrIds);
     const ids = isMultiRetrieve ? idOrIds : [idOrIds];
 

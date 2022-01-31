@@ -1,8 +1,6 @@
 import axios, { Axios, AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
 
-import type { NzoiConfig, RequestOptions } from './types';
-
 import { NzoiAssertionError } from './Error';
 
 const getSetCookieOrDie = (response: AxiosResponse) => {
@@ -19,7 +17,7 @@ export default class HttpClient {
   private readyPromise: Promise<unknown>;
   private sessionId: string | null = null;
 
-  constructor(config: Required<NzoiConfig>) {
+  constructor(config: Required<Nzoi.Config>) {
     this.axios = axios.create({
       baseURL: `https://${config.host}`,
       maxRedirects: 0,
@@ -42,7 +40,7 @@ export default class HttpClient {
     await this.readyPromise;
   }
 
-  async request(options: RequestOptions) {
+  async request(options: Nzoi.RequestOptions) {
     await this.ready();
     if (this.sessionId === null) {
       throw new NzoiAssertionError('sessionId is null after awaiting ready() in HttpClient?');

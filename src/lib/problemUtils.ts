@@ -1,8 +1,6 @@
 import type { CheerioAPI, Element, Node } from 'cheerio';
 
-import type { NzoiProblemLimits, NzoiProblemStatistics } from '../types';
-
-export const parseProblemLimits = (cheerio: CheerioAPI): NzoiProblemLimits => {
+export const parseProblemLimits = (cheerio: CheerioAPI): Nzoi.Problem.Limits => {
   const filterTags = ['div', 'ul', 'br'];
 
   let root: Node | null = cheerio('#main-container').children().toArray()[0];
@@ -58,7 +56,7 @@ export const parseProblemLimits = (cheerio: CheerioAPI): NzoiProblemLimits => {
   }
 };
 
-export const parseProblemStats = (cheerio: CheerioAPI): NzoiProblemStatistics => {
+export const parseProblemStats = (cheerio: CheerioAPI): Nzoi.Problem.Statistics => {
   let correct = 0;
   let incorrect = 0;
 

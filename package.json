@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "API client for train.nzoi.org.nz",
   "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "typings": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "clean": "rimraf lib",
