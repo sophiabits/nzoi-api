@@ -1,7 +1,7 @@
 import axios, { Axios, AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
 
-import { NzoiAssertionError } from './Error';
+import assert from './lib/assert';
 
 const getSetCookieOrDie = (response: AxiosResponse) => {
   const setCookieHeader = response.headers['set-cookie'];
@@ -36,15 +36,22 @@ export default class HttpClient {
     });
   }
 
+  async getAuthenticityToken(path: string) {
+    const response = await this.axios.get(path);
+    const $ = cheerio.load(response.data);
+    const token = $('meta[name="csrf-token"]').attr('content')!;
+
+    return { token, response };
+  }
+
   async ready() {
     await this.readyPromise;
   }
 
   async request(options: Nzoi.RequestOptions) {
     await this.ready();
-    if (this.sessionId === null) {
-      throw new NzoiAssertionError('sessionId is null after awaiting ready() in HttpClient?');
-    }
+
+    assert(this.sessionId !== null, 'sessionId is null after awaiting ready() in HttpClient?');
 
     const { method, params, path } = options;
 
@@ -60,9 +67,9 @@ export default class HttpClient {
 
   private async __createSession(username: string, password: string) {
     // Step 1: Load the sign in page and grab the guest session ID & the CSRF token value
-    const guestResponse = await this.axios.get('/accounts/sign_in');
-    const $ = cheerio.load(guestResponse.data);
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    const { token: csrfToken, response: guestResponse } = await this.getAuthenticityToken(
+      '/accounts/sign_in',
+    );
 
     // Step 2: Sign in via credentials
     const loginResponse = await this.axios.post(
