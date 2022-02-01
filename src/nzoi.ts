@@ -1,3 +1,4 @@
+import Evaluators from './resources/Evaluators';
 import Problems from './resources/Problems';
 import ProblemSets from './resources/ProblemSets';
 import Submissions from './resources/Submissions';
@@ -9,6 +10,7 @@ import { DEFAULT_NZOI_HOST } from './config';
 
 export class Nzoi {
   // Resources
+  evaluators: Evaluators;
   problems: Problems;
   problemSets: ProblemSets;
   submissions: Submissions;
@@ -22,6 +24,7 @@ export class Nzoi {
       ...config,
     });
 
+    this.evaluators = new Evaluators(this.http);
     this.problems = new Problems(this.http);
     this.problemSets = new ProblemSets(this.http);
     this.submissions = new Submissions(this.http);

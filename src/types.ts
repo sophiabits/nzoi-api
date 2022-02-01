@@ -40,6 +40,17 @@ declare namespace Nzoi {
     username: string;
   }
 
+  interface Evaluator {
+    id: string;
+    name: string;
+    description: string;
+    source: string;
+    ownerId: string;
+
+    createdAt: string;
+    updatedAt: string;
+  }
+
   /** @see https://github.com/NZOI/nztrain/blob/e34b7e87f6aebd411f85779f34a50be93a17a90e/db/schema.rb#L368 */
   interface Problem {
     id: string;
