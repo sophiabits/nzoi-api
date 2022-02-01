@@ -1,6 +1,8 @@
 import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
 
+import { CredentialAuth, SessionIdAuth } from './auth';
+
 import assert from './lib/assert';
 
 const getSetCookieOrDie = (response: AxiosResponse) => {
@@ -24,7 +26,14 @@ export default class HttpClient {
       withCredentials: true,
     });
 
-    this.readyPromise = this.__createSession(config.username, config.password);
+    if (config.auth instanceof SessionIdAuth) {
+      this.sessionId = config.auth.sessionId;
+      this.readyPromise = Promise.resolve();
+    } else if (config.auth instanceof CredentialAuth) {
+      this.readyPromise = this.__createSession(config.auth.username, config.auth.password);
+    } else {
+      assert(false, 'Invalid `auth` object supplied to HttpClient');
+    }
   }
 
   makeUrl(path: string) {
@@ -44,13 +53,19 @@ export default class HttpClient {
     return { token, response };
   }
 
+  async getSessionId() {
+    await this.readyPromise;
+    assert(this.sessionId !== null, 'sessionId is null after awaiting ready() in HttpClient?');
+
+    return this.sessionId;
+  }
+
   async ready() {
     await this.readyPromise;
   }
 
   async request(options: Nzoi.RequestOptions) {
     await this.ready();
-
     assert(this.sessionId !== null, 'sessionId is null after awaiting ready() in HttpClient?');
 
     const { method, params, path } = options;

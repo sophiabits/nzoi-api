@@ -1,4 +1,6 @@
 declare namespace Nzoi {
+  interface Auth {}
+
   /**
    * Not all languages are guaranteed to be here.
    */
@@ -35,9 +37,11 @@ declare namespace Nzoi {
   }
 
   interface Config {
+    /**
+     * The authentication scheme to use with NZOI.
+     */
+    auth: Auth;
     host?: string;
-    password: string;
-    username: string;
   }
 
   interface Evaluator {

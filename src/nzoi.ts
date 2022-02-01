@@ -30,4 +30,8 @@ export class Nzoi {
     this.submissions = new Submissions(this.http);
     this.users = new Users(this.http);
   }
+
+  async getSessionId() {
+    return this.http.getSessionId();
+  }
 }
