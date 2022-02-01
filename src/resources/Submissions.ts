@@ -59,7 +59,7 @@ export default class Submissions extends Resource {
   }
 
   retrieve = retrieveEndpoint<Nzoi.Submission>({
-    path: '/user/:id.xml',
+    path: '/submissions/:id.xml',
     transform: (response) => transformSubmission(new XMLParser().parse(response.data)),
   });
 }
