@@ -64,6 +64,16 @@ declare namespace Nzoi {
     }
   }
 
+  interface ProblemSet {
+    id: string;
+    name: string;
+    ownerId: string;
+    // TODO problemIds
+
+    createdAt: string;
+    updatedAt: string;
+  }
+
   interface Submission {
     id: string;
 
