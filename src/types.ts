@@ -66,6 +66,11 @@ declare namespace Nzoi {
 
   interface Submission {
     id: string;
+
+    createdAt: string;
+    judgedAt: string;
+    updatedAt: string;
+
     /**
      * From 0..1, represents the overall % the user scored with this submission.
      */
@@ -79,7 +84,31 @@ declare namespace Nzoi {
   interface CreateSubmissionParams {
     language: Language;
     source: string;
-    problemId: string;
+    problemId: ResourceId;
+  }
+
+  interface ListSubmissionsFilterByUser {
+    userId: ResourceId | 'me';
+  }
+
+  interface ListSubmissionsFilterByProblem {
+    problemId: ResourceId;
+  }
+
+  interface ListSubmissionsParams {
+    where?: ListSubmissionsParams.Where;
+  }
+
+  namespace ListSubmissionsParams {
+    interface WhereByProblem {
+      problemId: ResourceId;
+    }
+
+    interface WhereByUser {
+      userId: UserId;
+    }
+
+    type Where = WhereByProblem | WhereByUser | {};
   }
 
   interface User {
@@ -98,6 +127,7 @@ declare namespace Nzoi {
   }
 
   type ResourceId = string | number;
+  type UserId = ResourceId | 'me';
 
   type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
