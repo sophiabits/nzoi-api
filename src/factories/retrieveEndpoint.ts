@@ -1,11 +1,14 @@
 import { AxiosResponse } from 'axios';
+import { XMLParser } from 'fast-xml-parser';
+
 import type Resource from '../resources/Resource';
 
 interface RetrieveEndpointOpts<Output> {
   /** The string :id will be replaced with the actual id requested */
   path: string;
-  /** Should convert the Axios response object into a JSON representation of the resource */
-  transform: (response: AxiosResponse) => Output;
+  rootKey: string;
+  /** Should convert the XML document into a JSON representation of the resource */
+  transform: (doc: any) => Output;
 }
 
 export interface RetrieveFn<Output> {
@@ -19,7 +22,7 @@ export interface RetrieveFn<Output> {
 export default function retrieveEndpoint<Output>(
   opts: RetrieveEndpointOpts<Output>,
 ): RetrieveFn<Output> {
-  const { path: pathTemplate, transform } = opts;
+  const { path: pathTemplate, rootKey, transform } = opts;
 
   async function retrieve(
     this: Resource,
@@ -35,7 +38,8 @@ export default function retrieveEndpoint<Output>(
           path: pathTemplate.replace(':id', id.toString()),
         });
 
-        return transform(response);
+        const doc = new XMLParser().parse(response.data);
+        return transform(doc[rootKey]);
       }),
     );
 

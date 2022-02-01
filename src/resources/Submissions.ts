@@ -1,5 +1,4 @@
-import { XMLParser } from 'fast-xml-parser';
-
+import listEndpoint from '../factories/listEndpoint';
 import retrieveEndpoint from '../factories/retrieveEndpoint';
 
 import Resource from './Resource';
@@ -33,34 +32,29 @@ export default class Submissions extends Resource {
     return createdSubmissionId;
   }
 
-  async list(params: Nzoi.ListSubmissionsParams): Promise<Nzoi.Submission[]> {
-    const where: Nzoi.ListSubmissionsParams.Where = params.where || {};
+  list = listEndpoint<Nzoi.Submission, Nzoi.ListSubmissionsParams>({
+    path: (params = {}) => {
+      const where: Nzoi.ListSubmissionsParams.Where = params.where || {};
 
-    const path =
-      'problemId' in where
+      return 'problemId' in where
         ? `/submissions/by_problem/${where.problemId}.xml`
         : 'userId' in where
         ? where.userId === 'me'
           ? `/submissions/my.xml`
           : `/submissions/by_user/${where.userId}.xml`
         : `/submissions.xml`;
+    },
 
-    const response = await this.http.request({
-      method: 'GET',
-      path,
-    });
+    itemKey: 'submission',
+    rootKey: 'submissions',
 
-    // TODO: Errors
-
-    const xmlDoc = new XMLParser().parse(response.data);
-    return xmlDoc.submissions.submission.map((submission: any) =>
-      transformSubmission({ submission }),
-    );
-  }
+    transform: transformSubmission,
+  });
 
   retrieve = retrieveEndpoint<Nzoi.Submission>({
     path: '/submissions/:id.xml',
-    transform: (response) => transformSubmission(new XMLParser().parse(response.data)),
+    rootKey: 'submission',
+    transform: transformSubmission,
   });
 }
 
@@ -71,16 +65,16 @@ function getSubmissionIdFromUrl(url: string) {
   return idPart;
 }
 
-function transformSubmission(xmlDoc: any): Nzoi.Submission {
+function transformSubmission(doc: any): Nzoi.Submission {
   return {
-    id: xmlDoc.submission.id.toString(),
-    createdAt: xmlDoc.submission['created-at'],
-    evaluation: xmlDoc.submission.evaluation,
-    judgedAt: xmlDoc.submission['judged-at'],
-    language: xmlDoc.submission['language-id'] as Nzoi.Language,
-    source: xmlDoc.submission.source,
-    problemId: xmlDoc.submission['problem-id'].toString(),
-    updatedAt: xmlDoc.submission['updated-at'],
-    userId: xmlDoc.submission['user-id'].toString(),
+    id: doc.id.toString(),
+    createdAt: doc['created-at'],
+    evaluation: doc.evaluation,
+    judgedAt: doc['judged-at'],
+    language: doc['language-id'] as Nzoi.Language,
+    source: doc.source,
+    problemId: doc['problem-id'].toString(),
+    updatedAt: doc['updated-at'],
+    userId: doc['user-id'].toString(),
   };
 }

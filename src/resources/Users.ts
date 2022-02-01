@@ -1,22 +1,18 @@
-import { XMLParser } from 'fast-xml-parser';
-
 import retrieveEndpoint from '../factories/retrieveEndpoint';
 
 import Resource from './Resource';
 
-function transformUser(xml: string): Nzoi.User {
-  const doc = new XMLParser().parse(xml);
-
+function transformUser(doc: any): Nzoi.User {
   return {
-    id: doc.user.id.toString(),
-    avatar: doc.user.avatar.url,
-    country: doc.user.country,
-    email: doc.user.email,
-    name: doc.user.name,
-    username: doc.user.username,
+    id: doc.id.toString(),
+    avatar: doc.avatar.url,
+    country: doc.country,
+    email: doc.email,
+    name: doc.name,
+    username: doc.username,
 
-    createdAt: doc.user['created-at'],
-    updatedAt: doc.user['updated-at'],
+    createdAt: doc['created-at'],
+    updatedAt: doc['updated-at'],
   };
 }
 
@@ -25,6 +21,7 @@ export default class Users extends Resource {
 
   retrieve = retrieveEndpoint<Nzoi.User>({
     path: '/user/:id.xml',
-    transform: (response) => transformUser(response.data),
+    rootKey: 'user',
+    transform: transformUser,
   });
 }
