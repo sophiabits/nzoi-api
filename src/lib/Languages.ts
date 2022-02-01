@@ -1,7 +1,10 @@
 import assertUnreachable from './assertUnreachable';
 
 export class Languages {
-  static getDefaultLanguage(family: Nzoi.LanguageFamily): Nzoi.Language {
+  /**
+   * Returns the "latest and greatest" language for a given family.
+   */
+  static defaultFor(family: Nzoi.LanguageFamily): Nzoi.Language {
     switch (family) {
       case Nzoi.LanguageFamily.Cpp:
         return Nzoi.Language.Cpp17;
@@ -35,7 +38,7 @@ export class Languages {
     }
   }
 
-  static getFamily(language: Nzoi.Language): Nzoi.LanguageFamily {
+  static familyOf(language: Nzoi.Language): Nzoi.LanguageFamily {
     switch (language) {
       case Nzoi.Language.C11:
       case Nzoi.Language.C99:
