@@ -64,6 +64,24 @@ declare namespace Nzoi {
     }
   }
 
+  interface Submission {
+    id: string;
+    /**
+     * From 0..1, represents the overall % the user scored with this submission.
+     */
+    evaluation: number;
+    language: Language;
+    source: string;
+    problemId: string;
+    userId: string;
+  }
+
+  interface CreateSubmissionParams {
+    language: Language;
+    source: string;
+    problemId: string;
+  }
+
   interface User {
     id: string;
     avatar: string;
@@ -81,9 +99,23 @@ declare namespace Nzoi {
 
   type ResourceId = string | number;
 
-  interface RequestOptions {
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+  interface CommonRequestOptions {
+    authenticityToken?: string;
     params?: Record<string, string | number>;
     path: string;
   }
+
+  interface PostFormRequestOptions extends CommonRequestOptions {
+    method: 'POST';
+    type: 'form';
+  }
+
+  interface GenericRequestOptions extends CommonRequestOptions {
+    method: RequestMethod;
+    type?: undefined;
+  }
+
+  type RequestOptions = PostFormRequestOptions | GenericRequestOptions;
 }

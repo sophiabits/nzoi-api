@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosResponse } from 'axios';
+import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
 
 import assert from './lib/assert';
@@ -55,14 +55,28 @@ export default class HttpClient {
 
     const { method, params, path } = options;
 
-    return this.axios.request({
+    const config: AxiosRequestConfig<any> = {
       headers: {
         Cookie: this.sessionId,
       },
       method,
-      params,
       url: path,
-    });
+    };
+
+    if (method === 'POST' && options.type === 'form') {
+      const form = new URLSearchParams();
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          form.set(key, value.toString());
+        });
+      }
+
+      config.headers!['Content-Type'] = 'application/x-www-form-urlencoded';
+    } else {
+      config.params = params;
+    }
+
+    return this.axios.request(config);
   }
 
   private async __createSession(username: string, password: string) {
